@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import CurrencyInput from 'react-currency-input';
+import axios from 'axios';
+import {connect} from 'react-redux';
+import store from '../store';
 
-export default class Bank extends Component {
+class Bank extends Component {
     constructor() {
         super()
         this.state={
@@ -10,6 +13,21 @@ export default class Bank extends Component {
         }
         this.inputAmount = this.inputAmount.bind(this);
         this.moneyTransfer = this.moneyTransfer.bind(this);
+        this.direc = this.direc.bind(this);
+    }
+
+    componentDidMount() {
+        // axios.post('http://10.148.53.27:8083/register',{
+        //     email: "email@email.com",
+        //     firstName: "Minkyu",
+        //     lastName: "yang",
+        //     password: "1234",
+        //     ssn: "1234",
+        //     type: 1
+        // })
+        // .then(res=>{
+        //     console.log(res.data)
+        // })
     }
 
     moneyTransfer(evt) {
@@ -35,7 +53,12 @@ export default class Bank extends Component {
         })
     }
 
+    direc() {
+        this.props.history.push(`/signup`)
+    }
+
     render() {
+        console.log(this.props.token)
         return (
             <div className="container">
                 <div className="card">
@@ -52,9 +75,19 @@ export default class Bank extends Component {
                         </div>
                         <button className="btn btn-info" id="transferButton" onClick={this.moneyTransfer} value="deposit">DEPOSIT</button>
                         <button className="btn btn-danger" id="transferButton" onClick={this.moneyTransfer} value="withdraw">WITHDRAW</button>
+                        <button onClick={this.direc}>Click</button>
                     </div>
                 </div>
             </div>
         )
     }
 }
+
+const mapState = () => {
+    return {
+        token: store.getState().token
+    }
+}
+
+
+export default connect(mapState)(Bank)
